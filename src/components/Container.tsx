@@ -14,7 +14,7 @@ class Container extends Component {
 `;
     var editor = grapesjs.init({
       container: "#gjs",
-      plugins: [basic, thePlugin],
+      plugins: [basic, thePlugin, styleBG],
       forceClass: false,
       storageManager: false,
       canvas: {
@@ -36,8 +36,14 @@ class Container extends Component {
       },
     ]);
 
+    editor.on("component:create", (model) => {
+      if (model.get("type") === "video") {
+        editor.runCommand("open-assets", { target: model });
+      }
+    });
+
     editor.BlockManager.add("upload-widget", {
-      label: "Uploader widget",
+      label: "Uploader button",
       media: `<img style="width: 32px; height: 32px; filter: invert(0.75); pointer-events: none;" src='https://www.svgrepo.com/show/368574/button.svg' />`,
       content: `<button data-gjs-type="button" id="widget_id_MC44OTI2OTQ2MDg3NjQ0MDY1" data-link-uploader="https://uploadqa.entribe.com/gallery" data-close-outside="1" >Upload Here</button>`,
     });
@@ -46,6 +52,12 @@ class Container extends Component {
       label: "Gallery",
       media: `<img style="width: 32px; height: 32px; filter: invert(0.75); pointer-events: none;" src='https://www.svgrepo.com/show/530572/accelerate.svg' />`,
       content: `<iframe scrolling="no" frameborder="0" src="https://galleryqa.entribe.com?cl=595&gid=15" height="625px" width="100%" title="Widget Uploader Gallery"></iframe>`,
+    });
+
+    editor.BlockManager.add("upload-iframe", {
+      label: "Uploader Iframe",
+      media: `<img style="width: 32px; height: 32px; filter: invert(0.75); pointer-events: none;" src='https://www.svgrepo.com/show/528834/album.svg' />`,
+      content: `<iframe scrolling="no" frameborder="0" src="https://uploadqa.entribe.com/gallery" height="625px" width="100%" title="New Widget 7"></iframe>`,
     });
 
     editor.DomComponents.addType("button", {
